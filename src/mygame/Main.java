@@ -11,6 +11,8 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mygame.basecommands.Help;
+import mygame.basecommands.Say;
+import mygame.basecommands.Stop;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
@@ -24,6 +26,7 @@ public class Main extends SimpleApplication {
     public ServerDataManager dataManager;
     public ServerInfoMessage serverInfoMessage;
     public HashMap<String, Command> commands;
+    public PlayerPermissions permissions;
 
     public static void main(String[] args) {
         Utils.initSerializer();
@@ -34,12 +37,27 @@ public class Main extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+        
+        // CONSOLE INPUT THREAD START
+        
         (new InputThread(this)).start();
+        
+        // VALUES INIT
+        
         commands = new HashMap<String, Command>();
+        permissions = new PlayerPermissions();
         dataManager = new ServerDataManager();
         serverInfoMessage = new ServerInfoMessage("Scenes/Region0/main.j3o", "Test Server", Utils.PROTOCOL, Utils.GAMEHASHCODE);
-        this.registerCommand("help", new Help(this));
+        
+        // SERVER INIT
+        
         initServer(Utils.PORT);
+        
+        // COMMANDS INIT
+        
+        registerCommand("help", new Help(this, dataManager, permissions));
+        registerCommand("say", new Say(server));
+        registerCommand("stop", new Stop(server, this));
     }
 
     private void initServer(int port) {

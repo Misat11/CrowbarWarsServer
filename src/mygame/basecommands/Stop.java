@@ -8,6 +8,7 @@ package mygame.basecommands;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Server;
 import mygame.Command;
+import mygame.Main;
 import mygame.PermissionLevel;
 import mygame.TextMessage;
 
@@ -15,12 +16,14 @@ import mygame.TextMessage;
  *
  * @author misat11
  */
-public class Say implements Command {
+public class Stop implements Command {
 
     private Server server;
+    private Main main;
 
-    public Say(Server server) {
+    public Stop(Server server, Main main) {
         this.server = server;
+        this.main = main;
     }
 
     @Override
@@ -30,16 +33,15 @@ public class Say implements Command {
 
     @Override
     public void callFromServer(String m) {
-        String nm = m.replaceFirst("say", "");
-        if (nm.equals("") == false) {
-            server.broadcast(new TextMessage("Server said: " + nm));
-            System.out.println("[CHAT] Server said:" + nm);
-        }
+        server.broadcast(new TextMessage("Server is shuting down."));
+        server.close();
+        main.stop();
+        System.exit(0);
     }
 
     @Override
     public String getDescription() {
-        return "You can say from server to chat.";
+        return "Stop server";
     }
 
     @Override

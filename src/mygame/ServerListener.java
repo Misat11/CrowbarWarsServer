@@ -45,8 +45,19 @@ public class ServerListener implements MessageListener<HostedConnection> {
             if (orgmsg.startsWith("/")) {
                 String[] args = orgmsg.replaceFirst("/", "").split(" ");
                 if (main.commands.containsKey(args[0])) {
-                    System.out.println("[REQUEST] " + dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") call command " + args[0] + " (" + orgmsg + ")");
-                    main.commands.get(args[0]).call(source, orgmsg);
+                    PermissionLevel perms = main.commands.get(args[0]).getPermissionlevel();
+                    if (perms != PermissionLevel.DEFAULT) {
+                        if (main.permissions.hasPlayer(dataManager.getPlayerData(source.getId()).getName(), perms)) {
+                            System.out.println("[REQUEST] " + dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") call command " + args[0] + " (" + orgmsg + ")");
+                            main.commands.get(args[0]).call(source, orgmsg);
+                        } else {
+                            System.out.println("[REQUEST] " + dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") call command " + args[0] + " (" + orgmsg + ") without permissions.");
+                            source.send(new TextMessage("You haven't permissions to use command /"+args[0]));
+                        }
+                    } else {
+                        System.out.println("[REQUEST] " + dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") call command " + args[0] + " (" + orgmsg + ")");
+                        main.commands.get(args[0]).call(source, orgmsg);
+                    }
                 } else {
                     System.out.println("[REQUEST] " + dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") calling not exist command " + orgmsg);
                     source.send(new TextMessage("Command /" + args[0] + " not found. Type \"/help\" for help."));

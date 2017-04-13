@@ -12,17 +12,27 @@ import java.util.HashMap;
  * @author misat11
  */
 public class PlayerPermissions {
-    
+
     public HashMap<String, PermissionLevel> players;
-    
-    public PlayerPermissions() {}
-    
-    public void addPlayer(String playername, PermissionLevel permissions){
+
+    public PlayerPermissions() {
+        players = new HashMap<String, PermissionLevel>();
+    }
+
+    public boolean hasPlayer(String playername, PermissionLevel permissions) {
+        if (players.containsKey(playername)) {
+            return players.get(playername) == permissions;
+        } else {
+            return false;
+        }
+    }
+
+    public void addPlayer(String playername, PermissionLevel permissions) {
         players.put(playername, permissions);
     }
-    
-    public void removePlayer(String playername){
-        if(players.containsKey(playername)){
+
+    public void removePlayer(String playername) {
+        if (players.containsKey(playername)) {
             players.remove(playername);
         }
     }

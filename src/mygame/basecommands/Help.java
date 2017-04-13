@@ -9,6 +9,8 @@ import com.jme3.network.HostedConnection;
 import mygame.Command;
 import mygame.Main;
 import mygame.PermissionLevel;
+import mygame.PlayerPermissions;
+import mygame.ServerDataManager;
 import mygame.TextMessage;
 
 /**
@@ -18,27 +20,37 @@ import mygame.TextMessage;
 public class Help implements Command {
 
     private Main main;
-    
-    public Help (Main main) {
+    private ServerDataManager dataManager;
+    private PlayerPermissions playerPermissions;
+
+    public Help(Main main, ServerDataManager dataManager, PlayerPermissions playerPermissions) {
         this.main = main;
+        this.dataManager = dataManager;
+        this.playerPermissions = playerPermissions;
     }
-    
+
     @Override
     public void call(HostedConnection source, String m) {
         source.send(new TextMessage("------ HELP ------"));
         for (String key : main.commands.keySet()) {
-            source.send(new TextMessage("/" + key + " - " + main.commands.get(key).getDescription()));
+            if (main.commands.get(key).getPermissionlevel() != PermissionLevel.DEFAULT) {
+                if (playerPermissions.hasPlayer(dataManager.getPlayerData(source.getId()).getName(), main.commands.get(key).getPermissionlevel())) {
+                    source.send(new TextMessage("/" + key + " - " + main.commands.get(key).getDescription()));
+                }
+            } else {
+                source.send(new TextMessage("/" + key + " - " + main.commands.get(key).getDescription()));
+            }
         }
         source.send(new TextMessage("------------------"));
     }
-    
+
     @Override
     public void callFromServer(String m) {
-        System.out.println("------ HELP ------");
+        System.out.println("--- SERVER HELP ---");
         for (String key : main.commands.keySet()) {
             System.out.println("/" + key + " - " + main.commands.get(key).getDescription());
         }
-        System.out.println("------------------");
+        System.out.println("-------------------");
     }
 
     @Override
