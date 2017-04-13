@@ -10,7 +10,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import mygame.basecommands.Deop;
 import mygame.basecommands.Help;
+import mygame.basecommands.Kick;
+import mygame.basecommands.Op;
 import mygame.basecommands.Say;
 import mygame.basecommands.Stop;
 
@@ -58,6 +61,9 @@ public class Main extends SimpleApplication {
         registerCommand("help", new Help(this, dataManager, permissions));
         registerCommand("say", new Say(server));
         registerCommand("stop", new Stop(server, this));
+        registerCommand("op", new Op(permissions));
+        registerCommand("deop", new Deop(permissions));
+        registerCommand("kick", new Kick(dataManager, server));
     }
 
     private void initServer(int port) {
