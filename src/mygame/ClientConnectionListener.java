@@ -8,7 +8,6 @@ package mygame;
 import com.jme3.network.ConnectionListener;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Server;
-import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -31,11 +30,14 @@ public class ClientConnectionListener implements ConnectionListener {
     public void connectionAdded(Server s, HostedConnection source) {
         System.out.println("[REQUEST] New Client " + source.getId() + " [" + source.getAddress() + "] want to connect. Sending ServerInfoMessage");
         source.send(serverInfoMessage);
+        s.broadcast(new JoinLeaveMessage(source.getId(), true));
     }
 
     @Override
     public void connectionRemoved(Server s, HostedConnection source) {
         System.out.println("[LEAVE PLAYER] " + dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") now disconnected from server.");
         s.broadcast(new TextMessage(dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") now disconnected from server."));
+        dataManager.removePlayer(source.getId());
+        s.broadcast(new JoinLeaveMessage(source.getId(), false));
     }
 }

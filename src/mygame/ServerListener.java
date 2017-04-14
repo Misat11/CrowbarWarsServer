@@ -38,6 +38,7 @@ public class ServerListener implements MessageListener<HostedConnection> {
             pd.setModelAsset(p.getModelAsset());
             pd.setRotation(p.getRotation());
             pd.setWalkDirection(p.getWalkDirection());
+            pd.setViewDirection(p.getViewDirection());
             if (dataManager.isTherePlayerWithId(source.getId()) == false) {
                 dataManager.addOrRefreshplayer(source.getId(), pd);
                 System.out.println("[NEW PLAYER] " + dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") completed connection succesfully.");
