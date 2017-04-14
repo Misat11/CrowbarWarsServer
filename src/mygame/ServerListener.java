@@ -39,6 +39,13 @@ public class ServerListener implements MessageListener<HostedConnection> {
             pd.setRotation(p.getRotation());
             pd.setWalkDirection(p.getWalkDirection());
             pd.setViewDirection(p.getViewDirection());
+            if (dataManager.getPlayerId(pd.getName()) != -1) {
+                if (dataManager.getPlayerId(pd.getName()) != source.getId()) {
+                    source.close("You haven't original name!");
+                    System.out.println("[KICK] Player " + pd.getName() + "(Client " + source.getId() + ") was kicked because he doesn't have original name.");
+                    return;
+                }
+            }
             if (dataManager.isTherePlayerWithId(source.getId()) == false) {
                 dataManager.addOrRefreshplayer(source.getId(), pd);
                 System.out.println("[NEW PLAYER] " + dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") completed connection succesfully.");
@@ -60,7 +67,7 @@ public class ServerListener implements MessageListener<HostedConnection> {
                             main.commands.get(args[0]).call(source, orgmsg);
                         } else {
                             System.out.println("[REQUEST] " + dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") call command " + args[0] + " (" + orgmsg + ") without permissions.");
-                            source.send(new TextMessage("You haven't permissions to use command /"+args[0]));
+                            source.send(new TextMessage("You haven't permissions to use command /" + args[0]));
                         }
                     } else {
                         System.out.println("[REQUEST] " + dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") call command " + args[0] + " (" + orgmsg + ")");
