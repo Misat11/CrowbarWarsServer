@@ -30,7 +30,14 @@ public class ServerListener implements MessageListener<HostedConnection> {
     public void messageReceived(HostedConnection source, Message m) {
         if (m instanceof PlayerDataMessage) {
             PlayerDataMessage p = (PlayerDataMessage) m;
-            PlayerData pd = p.getPlayerData();
+            PlayerData pd = new PlayerData();
+            pd.setId(source.getId());
+            pd.setHealth(p.getHealth());
+            pd.setLocation(p.getLocation());
+            pd.setName(p.getName());
+            pd.setModelAsset(p.getModelAsset());
+            pd.setRotation(p.getRotation());
+            pd.setWalkDirection(p.getWalkDirection());
             if (dataManager.isTherePlayerWithId(source.getId()) == false) {
                 dataManager.addOrRefreshplayer(source.getId(), pd);
                 System.out.println("[NEW PLAYER] " + dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") completed connection succesfully.");

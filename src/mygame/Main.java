@@ -4,10 +4,8 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.system.JmeContext;
-import java.io.Console;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mygame.basecommands.Deop;
@@ -68,6 +66,7 @@ public class Main extends SimpleApplication {
 
     private void initServer(int port) {
         try {
+            System.out.println("[INFO] Starting server ["+serverInfoMessage.getServerName()+"] on port "+port+" (Protocol: "+Utils.PROTOCOL+", GameHashCode: "+Utils.GAMEHASHCODE+")");
             server = Network.createServer(port);
             server.addMessageListener(new ServerListener(this, server, dataManager));
             server.addConnectionListener(new ClientConnectionListener(serverInfoMessage, dataManager));
