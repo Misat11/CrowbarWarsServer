@@ -1,5 +1,7 @@
 package mygame;
 
+import misat11.core.server.messages.PlayerListMessage;
+import misat11.core.server.messages.ServerInfoMessage;
 import com.jme3.app.SimpleApplication;
 import com.jme3.network.Network;
 import com.jme3.network.Server;
@@ -31,7 +33,7 @@ public class Main extends SimpleApplication {
 
     public static void main(String[] args) {
         Utils.initSerializer();
-
+        
         Main app = new Main();
         app.start(JmeContext.Type.Headless);
     }

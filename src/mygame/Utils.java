@@ -5,6 +5,11 @@
  */
 package mygame;
 
+import misat11.core.server.messages.PlayerListMessage;
+import misat11.core.server.messages.ServerInfoMessage;
+import misat11.core.server.messages.JoinLeaveMessage;
+import misat11.core.server.messages.TextMessage;
+import misat11.core.server.messages.PlayerDataMessage;
 import com.jme3.network.serializing.Serializer;
 
 /**
@@ -13,7 +18,7 @@ import com.jme3.network.serializing.Serializer;
  */
 public class Utils {
     public static final int PORT = 4444;
-    public static final int PROTOCOL = 1;
+    public static final int PROTOCOL = 2;
     public static final String GAMEHASHCODE = "crbar_multi";
     
     public static void initSerializer(){

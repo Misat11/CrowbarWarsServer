@@ -12,7 +12,7 @@ import mygame.Main;
 import mygame.PermissionLevel;
 import mygame.PlayerPermissions;
 import mygame.ServerDataManager;
-import mygame.TextMessage;
+import misat11.core.server.messages.TextMessage;
 
 /**
  *

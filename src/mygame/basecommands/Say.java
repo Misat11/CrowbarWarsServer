@@ -9,7 +9,7 @@ import com.jme3.network.HostedConnection;
 import com.jme3.network.Server;
 import mygame.Command;
 import mygame.PermissionLevel;
-import mygame.TextMessage;
+import misat11.core.server.messages.TextMessage;
 
 /**
  *
