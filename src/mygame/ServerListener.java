@@ -5,6 +5,7 @@
  */
 package mygame;
 
+import misat11.core.server.messages.PlayerData;
 import misat11.core.server.messages.TextMessage;
 import misat11.core.server.messages.PlayerDataMessage;
 import com.jme3.network.HostedConnection;

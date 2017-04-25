@@ -5,6 +5,7 @@
  */
 package mygame;
 
+import misat11.core.server.messages.PlayerData;
 import java.util.HashMap;
 
 /**

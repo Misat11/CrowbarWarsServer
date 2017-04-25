@@ -5,6 +5,7 @@
  */
 package mygame;
 
+import misat11.core.server.messages.PlayerData;
 import misat11.core.server.messages.PlayerListMessage;
 import misat11.core.server.messages.ServerInfoMessage;
 import misat11.core.server.messages.JoinLeaveMessage;
