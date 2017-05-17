@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mygame.basecommands;
+package misat11.core.server.basecommands;
 
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Server;
-import mygame.Command;
-import mygame.PermissionLevel;
+import misat11.core.server.Command;
+import misat11.core.server.PermissionLevel;
 import misat11.core.server.messages.TextMessage;
 
 /**

@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mygame.basecommands;
+package misat11.core.server.basecommands;
 
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Server;
-import mygame.Command;
-import mygame.PermissionLevel;
-import misat11.core.server.messages.PlayerData;
-import mygame.ServerDataManager;
+import misat11.core.server.Command;
+import misat11.core.server.PermissionLevel;
+import misat11.core.server.PlayersManager;
 import misat11.core.server.messages.TextMessage;
 
 /**
@@ -19,11 +18,11 @@ import misat11.core.server.messages.TextMessage;
  */
 public class Kick implements Command {
 
-    private ServerDataManager dataManager;
+    private PlayersManager playersManager;
     private Server server;
 
-    public Kick(ServerDataManager dataManager, Server server) {
-        this.dataManager = dataManager;
+    public Kick(PlayersManager playersManager, Server server) {
+        this.playersManager = playersManager;
         this.server = server;
     }
 
@@ -35,11 +34,11 @@ public class Kick implements Command {
     @Override
     public void call(HostedConnection source, String m) {
         String string = m.replaceFirst("/kick ", "");
-        int id = dataManager.getPlayerId(string);
+        int id = playersManager.getPlayerId(string);
         if (id != -1) {
             server.getConnection(id).close("You was kicked");
             source.send(new TextMessage("You kicked " + string + " from server."));
-            System.out.println("[KICK] Client " + string + " was kicked by " + dataManager.getPlayerData(source.getId()).getName() + ".");
+            System.out.println("[KICK] Client " + string + " was kicked by " + playersManager.getPlayerName(source.getId()) + ".");
         } else {
             source.send(new TextMessage("No player with name " + string + "."));
         }
@@ -48,7 +47,7 @@ public class Kick implements Command {
     @Override
     public void callFromServer(String m) {
         String string = m.replaceFirst("kick ", "");
-        int id = dataManager.getPlayerId(string);
+        int id = playersManager.getPlayerId(string);
         if (id != -1) {
             server.getConnection(id).close("You was kicked");
             System.out.println("Succesfully kicked player " + string + ".");

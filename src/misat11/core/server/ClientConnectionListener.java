@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mygame;
+package misat11.core.server;
 
 import misat11.core.server.messages.ServerInfoMessage;
-import misat11.core.server.messages.JoinLeaveMessage;
 import misat11.core.server.messages.TextMessage;
 import com.jme3.network.ConnectionListener;
 import com.jme3.network.HostedConnection;
@@ -19,28 +18,28 @@ import com.jme3.network.Server;
 public class ClientConnectionListener implements ConnectionListener {
 
     private ServerInfoMessage serverInfoMessage;
-    private ServerDataManager dataManager;
+    private PlayersManager playersManager;
 
     public ClientConnectionListener() {
     }
 
-    public ClientConnectionListener(ServerInfoMessage serverInfoMessage, ServerDataManager dataManager) {
+    public ClientConnectionListener(ServerInfoMessage serverInfoMessage, PlayersManager playersManager) {
         this.serverInfoMessage = serverInfoMessage;
-        this.dataManager = dataManager;
+        this.playersManager = playersManager;
     }
 
     @Override
     public void connectionAdded(Server s, HostedConnection source) {
         System.out.println("[REQUEST] New Client " + source.getId() + " [" + source.getAddress() + "] want to connect. Sending ServerInfoMessage");
         source.send(serverInfoMessage);
-        s.broadcast(new JoinLeaveMessage(source.getId(), true));
     }
 
     @Override
     public void connectionRemoved(Server s, HostedConnection source) {
-        System.out.println("[LEAVE PLAYER] " + dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") now disconnected from server.");
-        s.broadcast(new TextMessage(dataManager.getPlayerData(source.getId()).getName() + " (Client " + source.getId() + ") now disconnected from server."));
-        dataManager.removePlayer(source.getId());
-        s.broadcast(new JoinLeaveMessage(source.getId(), false));
+        if (playersManager.isTherePlayerWithId(source.getId())) {
+            System.out.println("[LEAVE PLAYER] " + playersManager.getPlayerName(source.getId()) + " (Client " + source.getId() + ") now disconnected from server.");
+            s.broadcast(new TextMessage(playersManager.getPlayerName(source.getId()) + " (Client " + source.getId() + ") now disconnected from server."));
+            playersManager.removePlayer(source.getId());
+        }
     }
 }

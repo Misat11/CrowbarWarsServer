@@ -3,26 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mygame.basecommands;
+package misat11.core.server.basecommands;
 
 import com.jme3.network.HostedConnection;
-import com.jme3.network.Server;
-import mygame.Command;
-import mygame.Main;
-import mygame.PermissionLevel;
-import mygame.PlayerPermissions;
-import mygame.ServerDataManager;
-import misat11.core.server.messages.TextMessage;
+import misat11.core.server.Command;
+import misat11.core.server.PermissionLevel;
+import misat11.core.server.PlayerPermissions;
 
 /**
  *
  * @author misat11
  */
-public class Deop implements Command {
+public class Op implements Command {
 
     private PlayerPermissions playerPermissions;
 
-    public Deop(PlayerPermissions playerPermissions) {
+    public Op(PlayerPermissions playerPermissions) {
         this.playerPermissions = playerPermissions;
     }
 
@@ -33,12 +29,12 @@ public class Deop implements Command {
 
     @Override
     public void callFromServer(String m) {
-        playerPermissions.removePlayer(m.replaceFirst("deop ", ""));
+        playerPermissions.addPlayer(m.replaceFirst("op ", ""), PermissionLevel.OP);
     }
 
     @Override
     public String getDescription() {
-        return "Remove permissions from user";
+        return "Add permissions to user";
     }
 
     @Override

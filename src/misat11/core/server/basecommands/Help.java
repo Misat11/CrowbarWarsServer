@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mygame.basecommands;
+package misat11.core.server.basecommands;
 
 import com.jme3.network.HostedConnection;
-import mygame.Command;
-import mygame.Main;
-import mygame.PermissionLevel;
-import mygame.PlayerPermissions;
-import mygame.ServerDataManager;
+import misat11.core.server.Command;
+import misat11.core.server.Main;
+import misat11.core.server.PermissionLevel;
+import misat11.core.server.PlayerPermissions;
+import misat11.core.server.PlayersManager;
 import misat11.core.server.messages.TextMessage;
 
 /**
@@ -20,12 +20,12 @@ import misat11.core.server.messages.TextMessage;
 public class Help implements Command {
 
     private Main main;
-    private ServerDataManager dataManager;
+    private PlayersManager playersManager;
     private PlayerPermissions playerPermissions;
 
-    public Help(Main main, ServerDataManager dataManager, PlayerPermissions playerPermissions) {
+    public Help(Main main, PlayersManager playersManager, PlayerPermissions playerPermissions) {
         this.main = main;
-        this.dataManager = dataManager;
+        this.playersManager = playersManager;
         this.playerPermissions = playerPermissions;
     }
 
@@ -34,7 +34,7 @@ public class Help implements Command {
         source.send(new TextMessage("------ HELP ------"));
         for (String key : main.commands.keySet()) {
             if (main.commands.get(key).getPermissionlevel() != PermissionLevel.DEFAULT) {
-                if (playerPermissions.hasPlayer(dataManager.getPlayerData(source.getId()).getName(), main.commands.get(key).getPermissionlevel())) {
+                if (playerPermissions.hasPlayer(playersManager.getPlayerName(source.getId()), main.commands.get(key).getPermissionlevel())) {
                     source.send(new TextMessage("/" + key + " - " + main.commands.get(key).getDescription()));
                 }
             } else {
