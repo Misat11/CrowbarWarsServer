@@ -32,27 +32,27 @@ import misat11.core.server.objects.Entity;
  * @author misat11
  */
 public class ServerDataStorage {
-    
+
     private Server server;
     private BulletAppState bulletAppState;
     private LogicThread logicThread;
-    
+
     private HashMap<Integer, WorldObject> objects = new HashMap<Integer, WorldObject>();
     private int lastobjectid = 0;
-    
+
     private HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
     private HashMap<Integer, EntityAppState> entities_app_state = new HashMap<Integer, EntityAppState>();
     private HashMap<Integer, Integer> playerEntities = new HashMap<Integer, Integer>();
     private HashMap<Integer, CharacterControl> controls = new HashMap<Integer, CharacterControl>();
     private HashMap<Integer, Float> airTimes = new HashMap<Integer, Float>();
     private int lastentityid = 0;
-    
+
     public ServerDataStorage(Server server, BulletAppState bulletAppState, LogicThread logicThread) {
         this.server = server;
         this.bulletAppState = bulletAppState;
         this.logicThread = logicThread;
     }
-    
+
     public int spawnObject(WorldObject obj) {
         if (objects.containsValue(obj)) {
             return -1;
@@ -62,39 +62,39 @@ public class ServerDataStorage {
         spawnObj(id);
         return id;
     }
-    
+
     public void despawnObject(int id) {
         if (objects.containsKey(id)) {
             despawnObj(id);
             objects.remove(id);
         }
     }
-    
+
     public void respawnObject(int id) {
         if (objects.containsKey(id)) {
             respawnObj(id);
         }
     }
-    
+
     public void teleportObject(int id, Vector3f newloc) {
         if (objects.containsKey(id)) {
             teleportObj(id, newloc, objects.get(id).getRotation());
         }
     }
-    
+
     public void teleportObject(int id, Vector3f newloc, Quaternion newrot) {
         if (objects.containsKey(id)) {
             teleportObj(id, newloc, newrot);
         }
     }
-    
+
     public void syncObjectData() {
         ArrayList<Integer> list = getObjectIdList();
         for (int id : list) {
             syncObjectData(id);
         }
     }
-    
+
     private void syncObjectData(int id) {
         WorldObject obj = objects.get(id);
         if (objects.containsKey(id)) {
@@ -104,7 +104,7 @@ public class ServerDataStorage {
             server.broadcast(constructObjectLocationMessage(id));
         }
     }
-    
+
     private void spawnObj(int id) {
         WorldObject obj = objects.get(id);
         if (obj.isSpawned() == false) {
@@ -118,7 +118,7 @@ public class ServerDataStorage {
             server.broadcast(constructObjectSpawnMessage(id));
         }
     }
-    
+
     private void despawnObj(int id) {
         WorldObject obj = objects.get(id);
         if (obj.isSpawned() == true) {
@@ -128,7 +128,7 @@ public class ServerDataStorage {
             server.broadcast(constructObjectDespawnMessage(id));
         }
     }
-    
+
     private void teleportObj(int id, Vector3f loc, Quaternion rot) {
         WorldObject obj = objects.get(id);
         if (obj.isSpawned() == true) {
@@ -139,19 +139,19 @@ public class ServerDataStorage {
             obj.setRotation(rot);
         }
     }
-    
+
     private void respawnObj(int id) {
         despawnObj(id);
         spawnObj(id);
     }
-    
+
     public void syncEntityData() {
         ArrayList<Integer> list = getEntityIdList();
         for (int id : list) {
             syncEntityData(id);
         }
     }
-    
+
     private void syncEntityData(int id) {
         Entity ent = entities.get(id);
         if (entities.containsKey(id)) {
@@ -160,7 +160,7 @@ public class ServerDataStorage {
             server.broadcast(constructEntityLocationMessage(id));
         }
     }
-    
+
     public int spawnEntity(Entity ent) {
         if (entities.containsValue(ent)) {
             return -1;
@@ -172,7 +172,7 @@ public class ServerDataStorage {
         spawnEnt(id);
         return id;
     }
-    
+
     public void despawnEntity(int id) {
         if (entities.containsKey(id)) {
             logicThread.detachAppState(entities_app_state.get(id));
@@ -181,19 +181,19 @@ public class ServerDataStorage {
             entities.remove(id);
         }
     }
-    
+
     public void respawnEntity(int id) {
         if (entities.containsKey(id)) {
             respawnEnt(id);
         }
     }
-    
+
     public void teleportEntity(int id, Vector3f newloc) {
         if (entities.containsKey(id)) {
             teleportEnt(id, newloc);
         }
     }
-    
+
     private void spawnEnt(int id) {
         Entity ent = entities.get(id);
         if (ent.isSpawned() == false) {
@@ -210,7 +210,7 @@ public class ServerDataStorage {
             server.broadcast(constructEntitySpawnMessage(id));
         }
     }
-    
+
     private void despawnEnt(int id) {
         Entity ent = entities.get(id);
         if (ent.isSpawned() == true) {
@@ -220,21 +220,21 @@ public class ServerDataStorage {
             controls.remove(id);
             server.broadcast(constructEntityDespawnMessage(id));
         }
-        
+
     }
-    
+
     private void teleportEnt(int id, Vector3f loc) {
         Entity ent = entities.get(id);
         if (ent.isSpawned() == true) {
             controls.get(id).warp(loc);
         }
     }
-    
+
     private void respawnEnt(int id) {
         despawnEnt(id);
         spawnEnt(id);
     }
-    
+
     public ArrayList<Integer> getEntityIdList() {
         ArrayList<Integer> list = new ArrayList<Integer>();
         for (Integer key : entities.keySet()) {
@@ -242,7 +242,7 @@ public class ServerDataStorage {
         }
         return list;
     }
-    
+
     public ArrayList<Integer> getObjectIdList() {
         ArrayList<Integer> list = new ArrayList<Integer>();
         for (Integer key : objects.keySet()) {
@@ -250,27 +250,27 @@ public class ServerDataStorage {
         }
         return list;
     }
-    
+
     public float getAirTime(int id) {
         return airTimes.get(id);
     }
-    
+
     public boolean containsAirTime(int id) {
         return airTimes.containsKey(id);
     }
-    
+
     public void setAirTime(int id, float airTime) {
         airTimes.put(id, airTime);
     }
-    
+
     public CharacterControl getControl(int id) {
         return controls.get(id);
     }
-    
+
     public boolean containsControl(int id) {
         return controls.containsKey(id);
     }
-    
+
     public void checkClientHasMessage(int id, ClientHasMessage msg) {
         ArrayList<Integer> objects_list = getObjectIdList();
         ArrayList<Integer> entities_list = getEntityIdList();
@@ -295,53 +295,49 @@ public class ServerDataStorage {
             }
         }
     }
-    
+
     public SpawnObjectMessage constructObjectSpawnMessage(int id) {
-        if (objects.get(id).isWspatial()) {
-            return new SpawnObjectMessage(id, objects.get(id).getSended_spatial(), objects.get(id).getLocation(), objects.get(id).getRotation(), objects.get(id).getMass());
-        } else {
-            return new SpawnObjectMessage(id, objects.get(id).getAssetUrl(), objects.get(id).getLocation(), objects.get(id).getRotation(), objects.get(id).getMass());
-        }
+        return new SpawnObjectMessage(id, objects.get(id).getAssetUrl(), objects.get(id).getLocation(), objects.get(id).getRotation(), objects.get(id).getMass());
     }
-    
+
     public SpawnEntityMessage constructEntitySpawnMessage(int id) {
         return new SpawnEntityMessage(id, entities.get(id).getAssetUrl(), entities.get(id).getLocation(), entities.get(id).getMass(), entities.get(id).getHeadText());
     }
-    
+
     public DespawnObjectMessage constructObjectDespawnMessage(int id) {
         return new DespawnObjectMessage(id);
     }
-    
+
     public DespawnEntityMessage constructEntityDespawnMessage(int id) {
         return new DespawnEntityMessage(id);
     }
-    
+
     public ChangeEntityLocationMessage constructEntityLocationMessage(int id) {
         return new ChangeEntityLocationMessage(id, entities.get(id).getLocation(), entities.get(id).getSpatial().getControl(CharacterControl.class).getViewDirection(), entities.get(id).getActualAnim());
     }
-    
+
     public ChangeObjectLocationMessage constructObjectLocationMessage(int id) {
         return new ChangeObjectLocationMessage(id, objects.get(id).getLocation(), objects.get(id).getRotation());
     }
-    
-    public Entity getEntity(int id){
+
+    public Entity getEntity(int id) {
         return entities.get(id);
     }
-    
-    public boolean containsEntity(int id){
+
+    public boolean containsEntity(int id) {
         return entities.containsKey(id);
     }
-    
-    public Object getObject(int id){
+
+    public Object getObject(int id) {
         return objects.get(id);
     }
-    
-    public boolean containsObject(int id){
+
+    public boolean containsObject(int id) {
         return objects.containsKey(id);
     }
-    
-    public void moveEntity(int id, boolean left, boolean right, boolean up, boolean down, boolean jump, Vector3f camDir, Vector3f camLeft){
-        if(entities_app_state.containsKey(id)){
+
+    public void moveEntity(int id, boolean left, boolean right, boolean up, boolean down, boolean jump, Vector3f camDir, Vector3f camLeft) {
+        if (entities_app_state.containsKey(id)) {
             EntityAppState appState = entities_app_state.get(id);
             appState.setLeft(left);
             appState.setRight(right);

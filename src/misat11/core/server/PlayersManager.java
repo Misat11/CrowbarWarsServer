@@ -26,14 +26,14 @@ public class PlayersManager {
     private HashMap<Integer, Integer> entities_id = new HashMap<Integer, Integer>();
     private HashMap<String, Integer> playernames_db = new HashMap<String, Integer>();
     private Vector3f spawn_loc = new Vector3f(0f, 60f, 0f);
-
+    
     public PlayersManager(Server server, ServerDataStorage serverDataStorage) {
         this.serverDataStorage = serverDataStorage;
         this.server = server;
     }
 
     public void addPlayer(int conn_id, PlayerSettingsMessage msg) {
-        PlayerData data = new PlayerData(msg.getName(), "Models/womanmodel.j3o");
+        PlayerData data = new PlayerData(msg.getName(), "Misat11/WomanModel1");
         addPlayer(conn_id, data);
     }
 

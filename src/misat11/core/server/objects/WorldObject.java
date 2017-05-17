@@ -18,8 +18,6 @@ public class WorldObject {
 
     private String assetUrl;
     private Spatial spatial = new Node();
-    private Spatial sended_spatial;
-    private boolean wspatial = false;
     private Vector3f location;
     private Quaternion rotation;
     private Vector3f spawn_location;
@@ -29,16 +27,6 @@ public class WorldObject {
 
     public WorldObject(String assetUrl, Vector3f location, Quaternion rotation, float mass) {
         this.assetUrl = assetUrl;
-        this.location = location;
-        this.rotation = rotation;
-        this.spawn_location = location;
-        this.spawn_rotation = rotation;
-        this.mass = mass;
-    }
-    
-    public WorldObject(Spatial spatial, Vector3f location, Quaternion rotation, float mass){
-        this.sended_spatial = spatial;
-        this.wspatial = true;
         this.location = location;
         this.rotation = rotation;
         this.spawn_location = location;
@@ -60,14 +48,6 @@ public class WorldObject {
 
     public void setSpatial(Spatial spatial) {
         this.spatial = spatial;
-    }
-
-    public boolean isWspatial() {
-        return wspatial;
-    }
-
-    public void setWspatial(boolean wspatial) {
-        this.wspatial = wspatial;
     }
 
     public Vector3f getLocation() {
@@ -117,14 +97,5 @@ public class WorldObject {
     public void setSpawned(boolean spawned) {
         this.spawned = spawned;
     }
-
-    public Spatial getSended_spatial() {
-        return sended_spatial;
-    }
-
-    public void setSended_spatial(Spatial sended_spatial) {
-        this.sended_spatial = sended_spatial;
-    }
-    
     
 }

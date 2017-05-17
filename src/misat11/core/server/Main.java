@@ -9,6 +9,7 @@ import com.jme3.network.Server;
 import com.jme3.scene.Spatial;
 import com.jme3.system.JmeContext;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -37,6 +38,7 @@ public class Main extends SimpleApplication {
     private BulletAppState bulletAppState;
     private ServerDataStorage serverDataStorage;
     private PlayersManager playersManager;
+    private ModelsManager modelsManager;
     
     private EntitiesUpdaterAppState entitiesUpdaterAppState;
     private ObjectsUpdaterAppState objectsUpdaterAppState;
@@ -64,11 +66,12 @@ public class Main extends SimpleApplication {
         }
         commands = new HashMap<String, Command>();
         logic = new LogicThread(this);
+        modelsManager = new ModelsManager();
         bulletAppState = new BulletAppState();
         serverDataStorage = new ServerDataStorage(server, bulletAppState, logic);
         playersManager = new PlayersManager(server, serverDataStorage);
         permissions = new PlayerPermissions();
-        serverInfoMessage = new ServerInfoMessage("Scenes/Region0/main.j3o", "Test Server");
+        serverInfoMessage = new ServerInfoMessage("Misat11/TestMap", "Test Server", modelsManager.getModelList());
 
         // SERVER INIT
         System.out.println("[INFO] Starting server [" + serverInfoMessage.getServerName() + "] on port " + Utils.PORT + " (Protocol: " + Utils.PROTOCOL + ", GameHashCode: " + Utils.GAMEHASHCODE + ")");
@@ -138,4 +141,7 @@ public class Main extends SimpleApplication {
         return bulletAppState;
     }
 
+    public ModelsManager getModelsManager() {
+        return modelsManager;
+    }
 }
