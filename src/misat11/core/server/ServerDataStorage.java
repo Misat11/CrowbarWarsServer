@@ -36,6 +36,7 @@ import misat11.core.server.objects.Entity;
  */
 public class ServerDataStorage {
 
+    private Main main;
     private Server server;
     private BulletAppState bulletAppState;
     private LogicThread logicThread;
@@ -50,8 +51,9 @@ public class ServerDataStorage {
     private HashMap<Integer, Float> airTimes = new HashMap<Integer, Float>();
     private int lastentityid = 0;
 
-    public ServerDataStorage(Server server, BulletAppState bulletAppState, LogicThread logicThread) {
+    public ServerDataStorage(Main main, Server server, BulletAppState bulletAppState, LogicThread logicThread) {
         this.server = server;
+        this.main = main;
         this.bulletAppState = bulletAppState;
         this.logicThread = logicThread;
     }
@@ -170,7 +172,7 @@ public class ServerDataStorage {
         }
         int id = lastentityid++;
         entities.put(id, ent);
-        entities_app_state.put(id, new EntityAppState(id, ent, this));
+        entities_app_state.put(id, new EntityAppState(id, main, ent, this));
         logicThread.attachAppState(entities_app_state.get(id));
         spawnEnt(id);
         return id;
@@ -187,7 +189,13 @@ public class ServerDataStorage {
 
     public void respawnEntity(int id) {
         if (entities.containsKey(id)) {
-            respawnEnt(id);
+            respawnEnt(id, 10);
+        }
+    }
+
+    public void respawnEntity(int id, long time_in_seconds) {
+        if (entities.containsKey(id)) {
+            respawnEnt(id, time_in_seconds);
         }
     }
 
@@ -217,7 +225,7 @@ public class ServerDataStorage {
     private void despawnEnt(int id) {
         Entity ent = entities.get(id);
         if (ent.isSpawned() == true) {
-            ent.setSpawned(false);
+            ent.setSpawned(false); 
             bulletAppState.getPhysicsSpace().remove(controls.get(id));
             ent.getSpatial().removeControl(controls.get(id));
             controls.remove(id);
@@ -233,10 +241,10 @@ public class ServerDataStorage {
         }
     }
 
-    private void respawnEnt(int id) {
+    private void respawnEnt(int id, long time_in_seconds) {
         despawnEnt(id);
         try {
-            TimeUnit.SECONDS.sleep(1);
+            TimeUnit.SECONDS.sleep(time_in_seconds);
         } catch (InterruptedException ex) {
             
         }

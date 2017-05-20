@@ -7,7 +7,11 @@ package misat11.core.server.gamelogic.states;
 
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.math.Vector3f;
+import misat11.core.server.Main;
 import misat11.core.server.ServerDataStorage;
+import misat11.core.server.Utils;
+import misat11.core.server.messages.guis.CloseGuiMessage;
+import misat11.core.server.messages.guis.OpenGuiMessage;
 import misat11.core.server.objects.Entity;
 import misat11.core.server.reasons.DeathReason;
 
@@ -53,8 +57,11 @@ public class EntityAppState extends AbstractAppState {
     private float drown_time = 0f;
     private float drown_damage_for_second = 35f;
 
-    public EntityAppState(int id, Entity entity, ServerDataStorage serverDataStorage) {
+    private Main main;
+    
+    public EntityAppState(int id, Main main, Entity entity, ServerDataStorage serverDataStorage) {
         this.id = id;
+        this.main = main;
         this.entity = entity;
         this.serverDataStorage = serverDataStorage;
     }
@@ -120,9 +127,18 @@ public class EntityAppState extends AbstractAppState {
     }
 
     public void die(DeathReason death) {
+        boolean hasOwner = main.getPlayersManager().hasAnyPlayerEntity(id);
+        int ownerId = -1;
+        if(hasOwner){ 
+            ownerId = main.getPlayersManager().getOwnerOfEntity(id);
+            main.server.getConnection(ownerId).send(new OpenGuiMessage(Utils.getRespawnGui(10)));
+        }
         entity.setHealth(100);
         serverDataStorage.respawnEntity(id);
         System.out.println("[INFO] Entity " + id + " died (" + death.toString() + ")");
+        if(hasOwner){
+            main.server.getConnection(ownerId).send(new CloseGuiMessage(100));
+        }
     }
 
     @Override

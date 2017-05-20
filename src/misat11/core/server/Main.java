@@ -67,7 +67,7 @@ public class Main extends SimpleApplication {
         logic = new LogicThread(this);
         modelsManager = new ModelsManager();
         bulletAppState = new BulletAppState();
-        serverDataStorage = new ServerDataStorage(server, bulletAppState, logic);
+        serverDataStorage = new ServerDataStorage(this, server, bulletAppState, logic);
         playersManager = new PlayersManager(server, serverDataStorage);
         permissions = new PlayerPermissions();
         serverInfoMessage = new ServerInfoMessage("Misat11/TestMap", "Test Server", modelsManager.getModelList());
@@ -143,4 +143,9 @@ public class Main extends SimpleApplication {
     public ModelsManager getModelsManager() {
         return modelsManager;
     }
+
+    public PlayersManager getPlayersManager() {
+        return playersManager;
+    }
+    
 }

@@ -8,13 +8,11 @@ package misat11.core.server;
 import com.jme3.math.Vector3f;
 import com.jme3.network.Server;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import misat11.core.server.messages.CameraLookMessage;
 import misat11.core.server.messages.HealthBarUpdateMessage;
 import misat11.core.server.messages.MoveMessage;
 import misat11.core.server.messages.PlayerSettingsMessage;
-import misat11.core.server.messages.guis.Gui;
-import misat11.core.server.messages.guis.OpenGuiMessage;
-import misat11.core.server.messages.guis.TextElement;
 import misat11.core.server.objects.Entity;
 
 /**
@@ -30,7 +28,7 @@ public class PlayersManager {
     private HashMap<Integer, Integer> entities_id = new HashMap<Integer, Integer>();
     private HashMap<String, Integer> playernames_db = new HashMap<String, Integer>();
     private Vector3f spawn_loc = new Vector3f(0f, 60f, 0f);
-    
+
     public PlayersManager(Server server, ServerDataStorage serverDataStorage) {
         this.serverDataStorage = serverDataStorage;
         this.server = server;
@@ -47,9 +45,6 @@ public class PlayersManager {
         Entity entity = new Entity(data.getAssetUrl(), spawn_loc, 40f, data.getUsername());
         entities.put(conn_id, entity);
         spawnPlayer(conn_id);
-        Gui gui = new Gui(1);
-        gui.addElement(new TextElement("Vitej na testovacim serveru", 40, 20, 20, 15, 1));
-        server.getConnection(conn_id).send(new OpenGuiMessage(gui));
     }
 
     public void removePlayer(int conn_id) {
@@ -125,11 +120,25 @@ public class PlayersManager {
         return players.containsKey(id);
     }
 
+    public boolean hasAnyPlayerEntity(int id) {
+        return entities_id.containsValue(id);
+    }
+
+    public int getOwnerOfEntity(int id) {
+        for (Entry<Integer, Integer> entry : entities_id.entrySet()) {
+            if(entry.getValue() == id){
+                return entry.getKey();
+            }
+        }
+
+        return -1;
+    }
+
     public int getEntityId(int id) {
         return entities_id.get(id);
     }
 
-    public void update() { 
+    public void update() {
         for (int id : players.keySet()) {
             if (entities.containsKey(id)) {
                 server.getConnection(id).send(new CameraLookMessage(entities.get(id).getLocation()));
