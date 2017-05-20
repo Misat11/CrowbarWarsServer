@@ -8,8 +8,7 @@ import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.scene.Spatial;
 import com.jme3.system.JmeContext;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.IOException; 
 import java.util.HashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -23,8 +22,8 @@ import misat11.core.server.basecommands.Op;
 import misat11.core.server.basecommands.Say;
 import misat11.core.server.basecommands.Stop;
 import misat11.core.server.gamelogic.LogicThread;
-import misat11.core.server.gamelogic.states.CamerasUpdaterAppState;
-import misat11.core.server.gamelogic.states.EntitiesUpdaterAppState;
+import misat11.core.server.gamelogic.states.PlayersManagerUpdaterAppState;
+import misat11.core.server.gamelogic.states.EntitiesUpdaterAppState; 
 import misat11.core.server.gamelogic.states.ObjectsUpdaterAppState;
 
 public class Main extends SimpleApplication {
@@ -42,7 +41,7 @@ public class Main extends SimpleApplication {
     
     private EntitiesUpdaterAppState entitiesUpdaterAppState;
     private ObjectsUpdaterAppState objectsUpdaterAppState;
-    private CamerasUpdaterAppState camerasUpdaterAppState;
+    private PlayersManagerUpdaterAppState playersManagerUpdaterAppState; 
 
     public static void main(String[] args) {
         Utils.initSerializer();
@@ -102,11 +101,11 @@ public class Main extends SimpleApplication {
 
         entitiesUpdaterAppState = new EntitiesUpdaterAppState(serverDataStorage);
         objectsUpdaterAppState = new ObjectsUpdaterAppState(serverDataStorage);
-        camerasUpdaterAppState = new CamerasUpdaterAppState(playersManager);
+        playersManagerUpdaterAppState = new PlayersManagerUpdaterAppState(playersManager); 
         
         logic.attachAppState(entitiesUpdaterAppState);
         logic.attachAppState(objectsUpdaterAppState);
-        logic.attachAppState(camerasUpdaterAppState);
+        logic.attachAppState(playersManagerUpdaterAppState); 
 
         // COMMANDS INIT
         registerCommand("help", new Help(this, playersManager, permissions));

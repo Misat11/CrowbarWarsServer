@@ -15,6 +15,9 @@ import com.jme3.network.Server;
 import com.jme3.scene.Spatial;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import misat11.core.server.gamelogic.LogicThread;
 import misat11.core.server.gamelogic.states.EntityAppState;
 import misat11.core.server.messages.ChangeEntityLocationMessage;
@@ -232,6 +235,11 @@ public class ServerDataStorage {
 
     private void respawnEnt(int id) {
         despawnEnt(id);
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException ex) {
+            
+        }
         spawnEnt(id);
     }
 

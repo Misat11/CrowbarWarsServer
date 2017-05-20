@@ -12,16 +12,16 @@ import misat11.core.server.PlayersManager;
  *
  * @author misat11
  */
-public class CamerasUpdaterAppState extends AbstractAppState {
+public class PlayersManagerUpdaterAppState extends AbstractAppState {
 
     private PlayersManager playersManager;
 
-    public CamerasUpdaterAppState(PlayersManager playersManager) {
+    public PlayersManagerUpdaterAppState(PlayersManager playersManager) {
         this.playersManager = playersManager;
     }
     
     @Override
     public void update(float tpf){
-        playersManager.sendCameraMessages();
+        playersManager.update();
     }
 }

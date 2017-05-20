@@ -14,12 +14,20 @@ import misat11.core.server.messages.ChangeObjectLocationMessage;
 import misat11.core.server.messages.ClientHasMessage;
 import misat11.core.server.messages.DespawnEntityMessage;
 import misat11.core.server.messages.DespawnObjectMessage;
+import misat11.core.server.messages.HealthBarUpdateMessage;
 import misat11.core.server.messages.ModelInfo;
 import misat11.core.server.messages.MoveMessage;
 import misat11.core.server.messages.PlayerSettingsMessage;
 import misat11.core.server.messages.ServerWantClientHasMessage;
 import misat11.core.server.messages.SpawnEntityMessage;
 import misat11.core.server.messages.SpawnObjectMessage;
+import misat11.core.server.messages.guis.AbstractGuiElement;
+import misat11.core.server.messages.guis.CloseGuiMessage;
+import misat11.core.server.messages.guis.QuadElement;
+import misat11.core.server.messages.guis.Gui;
+import misat11.core.server.messages.guis.OpenGuiMessage; 
+import misat11.core.server.messages.guis.TextElement;
+import misat11.core.server.messages.guis.TextWCounterElement;
 
 /**
  *
@@ -27,7 +35,7 @@ import misat11.core.server.messages.SpawnObjectMessage;
  */
 public class Utils {
     public static final int PORT = 4444;
-    public static final int PROTOCOL = 4;
+    public static final int PROTOCOL = 5;
     public static final String GAMEHASHCODE = "crbar_multi";
     
     public static void initSerializer(){
@@ -45,5 +53,13 @@ public class Utils {
         Serializer.registerClass(CameraLookMessage.class);
         Serializer.registerClass(ServerWantClientHasMessage.class);
         Serializer.registerClass(ModelInfo.class);
+        Serializer.registerClass(Gui.class);
+        Serializer.registerClass(AbstractGuiElement.class);
+        Serializer.registerClass(OpenGuiMessage.class);
+        Serializer.registerClass(CloseGuiMessage.class);
+        Serializer.registerClass(TextElement.class); 
+        Serializer.registerClass(TextWCounterElement.class);
+        Serializer.registerClass(QuadElement.class);
+        Serializer.registerClass(HealthBarUpdateMessage.class);
     }
 }

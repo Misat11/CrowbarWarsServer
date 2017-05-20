@@ -37,7 +37,8 @@ public class EntityAppState extends AbstractAppState {
     private float lastOnGroundY = 0f;
     private float highestAirY = 0f;
 
-    private float damage_for_one_float = 0.1f;
+    private float damage_for_one_float = 2f;
+    private float height_without_damage = 4f;
 
     private float second_of_burn_to_damage = 10f;
     private float burnTime = 0f;
@@ -138,58 +139,66 @@ public class EntityAppState extends AbstractAppState {
                         && (highestAirY > entity.getLocation().getY())) {
                     if ((lastOnGroundY - entity.getLocation().getY()) > (highestAirY - entity.getLocation().getY())) {
                         float y = lastOnGroundY - entity.getLocation().getY();
-                        float d = y * damage_for_one_float;
-                        damage(d);
-                        if (entity.getHealth() <= 0f) {
-                            lastOnGroundY = 0f;
-                            highestAirY = 0f;
-                            die(DeathReason.FALL_FROM_HIGH_PLACE);
-                            return;
+                        if (y > height_without_damage) {
+                            float d = y * damage_for_one_float;
+                            damage(d);
+                            if (entity.getHealth() <= 0f) {
+                                lastOnGroundY = 0f;
+                                highestAirY = 0f;
+                                die(DeathReason.FALL_FROM_HIGH_PLACE);
+                                return;
+                            }
                         }
                     } else if (highestAirY > entity.getLocation().getY()) {
                         float y = highestAirY - entity.getLocation().getY();
-                        float d = y * damage_for_one_float;
-                        damage(d);
-                        if (entity.getHealth() <= 0f) {
-                            if ((highestAirY - entity.getLocation().getY()) > 100f) {
-                                lastOnGroundY = 0f;
-                                highestAirY = 0f;
-                                die(DeathReason.FALL_FROM_THE_SKY);
-                                return;
-                            } else {
-                                lastOnGroundY = 0f;
-                                highestAirY = 0f;
-                                die(DeathReason.FALL_FROM_HIGH_HEIGHT);
-                                return;
+                        if (y > height_without_damage) {
+                            float d = y * damage_for_one_float;
+                            damage(d);
+                            if (entity.getHealth() <= 0f) {
+                                if ((highestAirY - entity.getLocation().getY()) > 100f) {
+                                    lastOnGroundY = 0f;
+                                    highestAirY = 0f;
+                                    die(DeathReason.FALL_FROM_THE_SKY);
+                                    return;
+                                } else {
+                                    lastOnGroundY = 0f;
+                                    highestAirY = 0f;
+                                    die(DeathReason.FALL_FROM_HIGH_HEIGHT);
+                                    return;
+                                }
                             }
                         }
                     }
                 } else {
                     if ((lastOnGroundY > entity.getLocation().getY())) {
                         float y = lastOnGroundY - entity.getLocation().getY();
-                        float d = y * damage_for_one_float;
-                        damage(d);
-                        if (entity.getHealth() <= 0f) {
-                            lastOnGroundY = 0f;
-                            highestAirY = 0f;
-                            die(DeathReason.FALL_FROM_HIGH_PLACE);
-                            return;
+                        if (y > height_without_damage) {
+                            float d = y * damage_for_one_float;
+                            damage(d);
+                            if (entity.getHealth() <= 0f) {
+                                lastOnGroundY = 0f;
+                                highestAirY = 0f;
+                                die(DeathReason.FALL_FROM_HIGH_PLACE);
+                                return;
+                            }
                         }
                     } else if (highestAirY > entity.getLocation().getY()) {
                         float y = highestAirY - entity.getLocation().getY();
-                        float d = y * damage_for_one_float;
-                        damage(d);
-                        if (entity.getHealth() <= 0f) {
-                            if ((highestAirY - entity.getLocation().getY()) > 100f) {
-                                lastOnGroundY = 0f;
-                                highestAirY = 0f;
-                                die(DeathReason.FALL_FROM_THE_SKY);
-                                return;
-                            } else {
-                                lastOnGroundY = 0f;
-                                highestAirY = 0f;
-                                die(DeathReason.FALL_FROM_HIGH_HEIGHT);
-                                return;
+                        if (y > height_without_damage) {
+                            float d = y * damage_for_one_float;
+                            damage(d);
+                            if (entity.getHealth() <= 0f) {
+                                if ((highestAirY - entity.getLocation().getY()) > 100f) {
+                                    lastOnGroundY = 0f;
+                                    highestAirY = 0f;
+                                    die(DeathReason.FALL_FROM_THE_SKY);
+                                    return;
+                                } else {
+                                    lastOnGroundY = 0f;
+                                    highestAirY = 0f;
+                                    die(DeathReason.FALL_FROM_HIGH_HEIGHT);
+                                    return;
+                                }
                             }
                         }
                     }
